@@ -11,8 +11,6 @@ export async function getOrder(prevState: any, formData: FormData) {
   };
   if (rawFormData.order) {
     const order = await getOrderQuery(rawFormData.order.toString());
-    console.log("Bien");
-    console.log(order);
     // Compruebo si el mail es el mismo (Check de seguridad)
     if (order) {
       if (rawFormData.email?.toString() === order.contact_email) {
@@ -52,10 +50,7 @@ async function searchDelivery(trackingNumber: string) {
   // La dejo aqui por si en un futuro queremos personalizar pantalla de seguimiento del envio
   const url =
     "https://dinapaqweb.tipsa-dinapaq.com/https/consultaDestinatarios/";
-  const browser = await puppeteer.launch({
-    headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   await page.goto(url);
   // Introduzco el localizador
