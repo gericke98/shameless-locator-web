@@ -1,7 +1,7 @@
 "use server";
 
 import { getOrderQuery } from "@/db/queries";
-import puppeteer from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 
 export async function getOrder(prevState: any, formData: FormData) {
   // Extraigo la informacion del formulario
@@ -59,10 +59,14 @@ async function searchDelivery(trackingNumber: string) {
     "#tabla > tbody > tr:nth-child(5) > td > input[type=submit]"
   );
   // Wait for the new page to open
-  const newPagePromise = new Promise((x) =>
-    browser.once("targetcreated", (target) => x(target.page()))
+  const newPagePromise: Promise<any> = new Promise((resolve) =>
+    browser.once("targetcreated", async (target: any) => {
+      const newPage = await target.page();
+      resolve(newPage);
+    })
   );
-  const newPage = (await newPagePromise) as puppeteer.Page;
+
+  const newPage = await newPagePromise;
   await newPage.waitForSelector("#estado-localizado"); // Update the selector
 
   const result = await newPage.evaluate(() => {
