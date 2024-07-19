@@ -13,6 +13,7 @@ export default function Home() {
     tracking: null,
     shipping: null,
   });
+  console.log(order);
   const [index, setIndex] = useState<number>(1);
   useEffect(() => {
     setIsClient(true);

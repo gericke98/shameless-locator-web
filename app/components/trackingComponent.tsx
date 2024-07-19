@@ -12,6 +12,7 @@ type Props = {
 };
 
 export const TrackingComponent = ({ order, index }: Props) => {
+  console.log(order);
   return (
     <div
       className={cn(
