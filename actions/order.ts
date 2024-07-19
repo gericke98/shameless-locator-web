@@ -98,9 +98,9 @@ async function searchDelivery(trackingNumber: string) {
     });
     await browser.close();
     return result;
-  } catch (e) {
-    console.error("Tenemos problems", e);
-    console.log("No funciona");
+  } catch (error) {
+    console.error("Tenemos problems", error);
+    console.log("No funciona", error);
     if (browser) {
       await browser.close();
     }
