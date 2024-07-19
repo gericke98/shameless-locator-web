@@ -1,7 +1,7 @@
 "use server";
 
 import { getOrderQuery } from "@/db/queries";
-import puppeteer, { Browser, Page } from "puppeteer";
+import puppeteer from "puppeteer";
 
 export async function getOrder(prevState: any, formData: FormData) {
   // Extraigo la informacion del formulario

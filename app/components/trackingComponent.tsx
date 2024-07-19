@@ -51,7 +51,7 @@ export const TrackingComponent = ({ order, index }: Props) => {
                   order.message === option.textid &&
                     "bg-green-100 border-green-300",
                   option.idx < index && "bg-green-100 border-green-300",
-                  option.text === "INCIDENCIA" &&
+                  option.textid === "INCIDENCIA" &&
                     order.message === "INCIDENCIA" &&
                     "bg-red-100 border-red-300"
                 )}
