@@ -12,7 +12,6 @@ type Props = {
 };
 
 export const TrackingComponent = ({ order, index }: Props) => {
-  console.log(order);
   return (
     <div
       className={cn(
@@ -33,6 +32,7 @@ export const TrackingComponent = ({ order, index }: Props) => {
       <h3 className="w-full mt-5 ml-10 font-semibold lg:text-base text-sm">
         Localiza tu paquete
       </h3>
+      <h5>{order.message}</h5>
       <span className="border w-full border-slate-100 mt-1" />
       <h4 className="w-full mt-1 ml-10 font-normal lg:text-sm text-xs">
         Número localizador: {order.tracking}
