@@ -2,6 +2,8 @@
 
 import { getOrderQuery } from "@/db/queries";
 import chromium from "@sparticuz/chromium-min";
+import puppeteerCore from "puppeteer-core";
+import puppeteer from "puppeteer";
 
 export async function getOrder(prevState: any, formData: FormData) {
   // Extraigo la informacion del formulario
@@ -46,6 +48,29 @@ export async function getOrder(prevState: any, formData: FormData) {
   }
 }
 
+async function getBrowser() {
+  try {
+    if (process.env.NODE_ENV === "production") {
+      const executablePath = await chromium.executablePath();
+      const browser = await puppeteerCore.launch({
+        args: chromium.args,
+        defaultViewport: chromium.defaultViewport,
+        executablePath: executablePath,
+        headless: chromium.headless,
+      });
+      return browser;
+    } else {
+      const browser = await puppeteer.launch({
+        args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        headless: "new",
+      });
+      return browser;
+    }
+  } catch (e) {
+    console.error("Problems creando el browser");
+  }
+}
+
 async function searchDelivery(trackingNumber: string) {
   // La dejo aqui por si en un futuro queremos personalizar pantalla de seguimiento del envio
   const url =
@@ -53,21 +78,7 @@ async function searchDelivery(trackingNumber: string) {
   let puppeteer: any;
   let browser: any;
   try {
-    if (process.env.NODE_ENV === "production") {
-      puppeteer = await import("puppeteer-core");
-      browser = await puppeteer.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath: await chromium.executablePath(),
-        headless: chromium.headless,
-      });
-    } else {
-      puppeteer = await import("puppeteer");
-      browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        headless: "new",
-      });
-    }
+    const browser = await getBrowser();
     if (!browser) {
       throw new Error("Failed to launch the browser instance.");
     }
