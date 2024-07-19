@@ -16,6 +16,9 @@ export default function Home() {
   const [index, setIndex] = useState<number>(1);
   useEffect(() => {
     setIsClient(true);
+  }, []);
+  useEffect(() => {
+    setIsClient(true);
     const newindex = options.find(
       (option) => option.textid === order.message
     )?.idx;
