@@ -99,7 +99,8 @@ async function searchDelivery(trackingNumber: string) {
     await browser.close();
     return result;
   } catch (e) {
-    console.error("Tenemos problems");
+    console.error("Tenemos problems", e);
+    console.log("No funciona");
     if (browser) {
       await browser.close();
     }
