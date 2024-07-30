@@ -5,6 +5,9 @@ import chromium from "@sparticuz/chromium-min";
 import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
 
+const CHROMIUM_PATH =
+  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+
 export async function getOrder(prevState: any, formData: FormData) {
   // Extraigo la informacion del formulario
   const rawFormData = {
@@ -51,13 +54,30 @@ export async function getOrder(prevState: any, formData: FormData) {
 async function getBrowser() {
   try {
     if (process.env.NODE_ENV === "production") {
-      const executablePath = await chromium.executablePath();
+      // const executablePath = await chromium.executablePath();
+      // const browser = await puppeteerCore.launch({
+      //   args: chromium.args,
+      //   defaultViewport: chromium.defaultViewport,
+      //   executablePath: executablePath,
+      //   headless: chromium.headless,
+      // });
+      const chromium = await import("@sparticuz/chromium-min").then(
+        (mod) => mod.default
+      );
+
+      const puppeteerCore = await import("puppeteer-core").then(
+        (mod) => mod.default
+      );
+
+      const executablePath = await chromium.executablePath(CHROMIUM_PATH);
+
       const browser = await puppeteerCore.launch({
         args: chromium.args,
         defaultViewport: chromium.defaultViewport,
-        executablePath: executablePath,
+        executablePath,
         headless: chromium.headless,
       });
+      // return browser;
       return browser;
     } else {
       const browser = await puppeteer.launch({
@@ -77,6 +97,10 @@ async function searchDelivery(trackingNumber: string) {
     "https://dinapaqweb.tipsa-dinapaq.com/https/consultaDestinatarios/";
   let puppeteer: any;
   let browser: any;
+  const executablePath = await chromium.executablePath(
+    "https://ueryijbhbhikbikwibdj.supabase.co/storage/v1/object/public/ShamelessPublic/chromium%20(1)"
+  );
+  console.log(executablePath);
   try {
     const browser = await getBrowser();
     if (!browser) {
