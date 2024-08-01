@@ -16,7 +16,7 @@ export const TrackingComponent = ({ order, index }: Props) => {
     <div
       className={cn(
         "hidden",
-        order.message.length &&
+        order.seguimientos.length &&
           "lg:w-[50%] w-[75%] flex flex-col mt-16 mb-0 bg-white items-center rounded-3xl"
       )}
     >
