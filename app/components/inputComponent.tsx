@@ -9,7 +9,6 @@ import { useToast } from "@/components/ui/use-toast";
 import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Order } from "@/types";
-import { Spinner } from "@nextui-org/spinner";
 import { Button } from "./button";
 
 type Props = {
@@ -35,7 +34,7 @@ export const InputComponent = ({ order, setOrder }: Props) => {
         description: "There was a problem with your request.",
       });
     } else if (state?.message !== "" && state) {
-      setOrder(state);
+      setOrder(state as Order);
     }
   }, [toast, state, setOrder]);
   return (
