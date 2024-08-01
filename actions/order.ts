@@ -75,7 +75,7 @@ export async function getId(): Promise<string | null> {
     if (url) {
       const response = await axios.post(url, soapBody, { headers });
       return new Promise<string | null>((resolve, reject) => {
-        parseString(response.data, (err: Error, result: any) => {
+        parseString(response.data, (err: Error | null, result: any) => {
           if (err) {
             console.error("Error parsing XML:", err);
             return;
