@@ -32,7 +32,7 @@ export default function Home() {
     }
   }, [order]);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-black">
+    <main className="flex lg:min-h-screen flex-col items-center justify-center bg-black">
       <InputComponent order={order} setOrder={setOrder} />
       {order.seguimientos.length > 0 && (
         <TrackingComponent order={order} index={index} />
