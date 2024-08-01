@@ -9,28 +9,35 @@ import { Order } from "@/types";
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
   const [order, setOrder] = useState<Order>({
+    seguimientos: [],
     message: "",
     tracking: null,
     shipping: null,
   });
-  console.log(order);
-  const [index, setIndex] = useState<number>(1);
+  const [index, setIndex] = useState<number>(0);
+
   useEffect(() => {
     setIsClient(true);
   }, []);
+
   useEffect(() => {
-    setIsClient(true);
-    const newindex = options.find(
-      (option) => option.textid === order.message
-    )?.idx;
-    if (newindex) {
-      setIndex(newindex);
+    if (order.seguimientos.length > 0) {
+      const newindex = options.find(
+        (option) =>
+          option.idx === Number(order.seguimientos.slice(-1)[0].V_COD_TIPO_EST)
+      )?.idx;
+      if (newindex) {
+        setIndex(newindex);
+      }
     }
   }, [order]);
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">
       <InputComponent order={order} setOrder={setOrder} />
-      <TrackingComponent order={order} index={index} />
+      {order.seguimientos.length > 0 && (
+        <TrackingComponent order={order} index={index} />
+      )}
+
       <InfoComponent order={order} />
     </main>
   );

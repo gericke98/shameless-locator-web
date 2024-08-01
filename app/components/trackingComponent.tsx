@@ -16,7 +16,7 @@ export const TrackingComponent = ({ order, index }: Props) => {
     <div
       className={cn(
         "hidden",
-        order.message !== "" &&
+        order.message.length &&
           "lg:w-[50%] w-[75%] flex flex-col mt-16 mb-0 bg-white items-center rounded-3xl"
       )}
     >
@@ -32,7 +32,6 @@ export const TrackingComponent = ({ order, index }: Props) => {
       <h3 className="w-full mt-5 ml-10 font-semibold lg:text-base text-sm">
         Localiza tu paquete
       </h3>
-      <h5>{order.message}</h5>
       <span className="border w-full border-slate-100 mt-1" />
       <h4 className="w-full mt-1 ml-10 font-normal lg:text-sm text-xs">
         Número localizador: {order.tracking}
@@ -49,15 +48,15 @@ export const TrackingComponent = ({ order, index }: Props) => {
                 alt={option.iconAlt}
                 className={cn(
                   "border-2 border-stone-300 rounded-full lg:p-3 bg-white lg:w-[50px] lg:h-auto w-[35px] p-2 z-10",
-                  order.message === option.textid &&
-                    "bg-green-100 border-green-300",
+                  order.seguimientos.slice(-1)[0].V_COD_TIPO_EST ===
+                    option.idx.toString() && "bg-green-100 border-green-300",
                   option.idx < index && "bg-green-100 border-green-300",
                   option.textid === "INCIDENCIA" &&
-                    order.message === "INCIDENCIA" &&
+                    order.seguimientos.slice(-1)[0].V_COD_TIPO_EST === "4" &&
                     "bg-red-100 border-red-300"
                 )}
               />
-              {option.idx < options.length && (
+              {option.idx < options.length - 1 && (
                 <>
                   <div
                     className={cn(
@@ -78,11 +77,23 @@ export const TrackingComponent = ({ order, index }: Props) => {
             <h3
               className={cn(
                 "lg:text-xs text-xxs mt-2",
-                order.message === option.text && "font-bold"
+                order.seguimientos.slice(-1)[0].V_COD_TIPO_EST ===
+                  option.idx.toString() && "font-bold"
               )}
             >
               {option.text}
             </h3>
+            {order.seguimientos[Number(option.idx)] && (
+              <h4
+                className={cn(
+                  "lg:text-xs text-xxs mt-2 text-center",
+                  order.seguimientos.slice(-1)[0].V_COD_TIPO_EST ===
+                    option.idx.toString() && "font-bold"
+                )}
+              >
+                {order.seguimientos[Number(option.idx)].D_FEC_HORA_ALTA}
+              </h4>
+            )}
           </div>
         ))}
       </div>

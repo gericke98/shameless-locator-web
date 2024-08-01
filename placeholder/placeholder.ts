@@ -5,25 +5,32 @@ import HandshakeIcon from "../public/handshake.svg";
 import AlertIcon from "../public/alert.svg";
 export const options = [
   {
-    idx: 1,
+    idx: 0,
     iconSrc: BoxIcon,
     iconAlt: "Box",
     text: "RECOGIDA",
     textid: "DOCUMENTADO",
   },
   {
-    idx: 2,
+    idx: 1,
     iconSrc: WarehouseIcon,
     iconAlt: "Warehouse",
     text: "ALMACÉN",
     textid: "TRANSITO",
   },
   {
-    idx: 3,
+    idx: 2,
     iconSrc: ShippingIcon,
     iconAlt: "ShippingIcon",
     text: "REPARTO",
     textid: "REPARTO",
+  },
+  {
+    idx: 3,
+    iconSrc: HandshakeIcon,
+    iconAlt: "HandshakeIcon",
+    text: "ENTREGADO",
+    textid: "ENTREGADO",
   },
   {
     idx: 4,
@@ -31,12 +38,5 @@ export const options = [
     iconAlt: "AlertIcon",
     text: "INCIDENCIA",
     textid: "INCIDENCIA",
-  },
-  {
-    idx: 5,
-    iconSrc: HandshakeIcon,
-    iconAlt: "HandshakeIcon",
-    text: "ENTREGADO",
-    textid: "ENTREGADO",
   },
 ];

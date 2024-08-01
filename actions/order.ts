@@ -1,12 +1,8 @@
 "use server";
-
+import axios from "axios";
+import { parseString } from "xml2js";
 import { getOrderQuery } from "@/db/queries";
-import chromium from "@sparticuz/chromium-min";
-import puppeteerCore from "puppeteer-core";
-import puppeteer from "puppeteer";
-
-const CHROMIUM_PATH =
-  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+import { EnvEstado } from "@/types";
 
 export async function getOrder(prevState: any, formData: FormData) {
   // Extraigo la informacion del formulario
@@ -19,17 +15,21 @@ export async function getOrder(prevState: any, formData: FormData) {
     // Compruebo si el mail es el mismo (Check de seguridad)
     if (order) {
       if (rawFormData.email?.toString() === order.contact_email) {
-        // Extraigo toda la información necesaria y la cargo en tabla propia
-        const deliveryWebsite = await searchDelivery(
-          order.fulfillments[0].tracking_number
-        );
+        // Creo una sesión en la web de tipsa
+        const id_response = await getId();
+        const tracking_number = order.fulfillments[0].tracking_number;
+        const albaran = tracking_number.substring(12);
+        const envios_response = await estadoEnvioRequest(id_response, albaran);
+
         return {
-          message: deliveryWebsite,
+          seguimientos: envios_response,
+          message: "Success",
           tracking: order.fulfillments[0].tracking_number,
           shipping: order.shipping_address,
         };
       } else {
         return {
+          seguimientos: [],
           message: "Please enter a valid email address",
           tracking: null,
           shipping: null,
@@ -37,6 +37,7 @@ export async function getOrder(prevState: any, formData: FormData) {
       }
     } else {
       return {
+        seguimientos: [],
         message: "Please enter a valid order number",
         tracking: null,
         shipping: null,
@@ -44,100 +45,136 @@ export async function getOrder(prevState: any, formData: FormData) {
     }
   } else {
     return {
+      seguimientos: [],
       message: "Please enter a valid order number",
       tracking: null,
       shipping: null,
     };
   }
 }
+// MUNDO TIPSA
+export async function getId(): Promise<string | null> {
+  const url = process.env.TIPSA_URL_PROD_LOGIN;
+  const headers = {
+    "Content-Type": "application/xml",
+  };
+  const soapBody = `
+    <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+    <soap:Body>
+        <LoginWSService___LoginCli2 xmlns="http://tempuri.org/">
+        <strCodAge>${process.env.AGENCIA}</strCodAge>
+        <strCod>${process.env.CLIENTE}</strCod>
+        <strPass>${process.env.CONSTRASENA}</strPass>
+        <strIdioma>ES</strIdioma>
+        </LoginWSService___LoginCli2>
+    </soap:Body>
+    </soap:Envelope>
+    `;
 
-async function getBrowser() {
   try {
-    if (process.env.NODE_ENV === "production") {
-      // const executablePath = await chromium.executablePath();
-      // const browser = await puppeteerCore.launch({
-      //   args: chromium.args,
-      //   defaultViewport: chromium.defaultViewport,
-      //   executablePath: executablePath,
-      //   headless: chromium.headless,
-      // });
-      const chromium = await import("@sparticuz/chromium-min").then(
-        (mod) => mod.default
-      );
+    if (url) {
+      const response = await axios.post(url, soapBody, { headers });
+      return new Promise<string | null>((resolve, reject) => {
+        parseString(response.data, (err: Error, result: any) => {
+          if (err) {
+            console.error("Error parsing XML:", err);
+            return;
+          }
 
-      const puppeteerCore = await import("puppeteer-core").then(
-        (mod) => mod.default
-      );
-
-      const executablePath = await chromium.executablePath(CHROMIUM_PATH);
-
-      const browser = await puppeteerCore.launch({
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
-        executablePath,
-        headless: chromium.headless,
+          try {
+            const sessionId =
+              result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0][
+                "v1:LoginWSService___LoginCli2Response"
+              ][0]["v1:strSesion"][0];
+            resolve(sessionId);
+          } catch (e) {
+            console.error("Error extracting session ID:", e);
+            reject(null);
+          }
+        });
       });
-      // return browser;
-      return browser;
     } else {
-      const browser = await puppeteer.launch({
-        args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        headless: "new",
-      });
-      return browser;
+      console.error("URL is not defined.");
+      return null;
     }
-  } catch (e) {
-    console.error("Problems creando el browser");
+  } catch (error) {
+    console.error(`Error sending SOAP request: ${error}`);
+    return null;
   }
 }
 
-async function searchDelivery(trackingNumber: string) {
-  // La dejo aqui por si en un futuro queremos personalizar pantalla de seguimiento del envio
-  const url =
-    "https://dinapaqweb.tipsa-dinapaq.com/https/consultaDestinatarios/";
-  let puppeteer: any;
-  let browser: any;
-  const executablePath = await chromium.executablePath(
-    "https://ueryijbhbhikbikwibdj.supabase.co/storage/v1/object/public/ShamelessPublic/chromium%20(1)"
-  );
-  console.log(executablePath);
+export async function estadoEnvioRequest(
+  idValue: string | null,
+  albaranValue: string
+): Promise<EnvEstado[] | null> {
+  const url = `${process.env.TIPSA_URL_PROD_ACTION}ConsEnvEstados`;
+  const headers = {
+    "Content-Type": "text/xml; charset=utf-8",
+  };
+
+  const soapBody = `
+    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+       <soapenv:Header>
+          <tem:ROClientIDHeader>
+             <tem:ID>${idValue}</tem:ID>
+          </tem:ROClientIDHeader>
+       </soapenv:Header>
+       <soapenv:Body>
+          <tem:WebServService___ConsEnvEstados>
+             <tem:strCodAgeCargo>${process.env.AGENCIA}</tem:strCodAgeCargo>
+             <tem:strCodAgeOri>${process.env.AGENCIA}</tem:strCodAgeOri>
+             <tem:strAlbaran>${albaranValue}</tem:strAlbaran>
+          </tem:WebServService___ConsEnvEstados>
+       </soapenv:Body>
+    </soapenv:Envelope>
+  `;
+
   try {
-    const browser = await getBrowser();
-    if (!browser) {
-      throw new Error("Failed to launch the browser instance.");
-    }
-    // const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
-    await page.goto(url, { waitUntil: "networkidle2" });
+    const response = await axios.post(url, soapBody, { headers });
+    return new Promise<EnvEstado[] | null>((resolve, reject) => {
+      parseString(response.data, (err: Error | null, result: any) => {
+        if (err) {
+          console.error("Error parsing XML:", err);
+          reject(null);
+          return;
+        }
 
-    // Introduzco el localizador
-    await page.type("#envio", trackingNumber);
-    await page.click(
-      "#tabla > tbody > tr:nth-child(5) > td > input[type=submit]"
-    );
-    // Wait for the new page to open
-    const newPagePromise: Promise<any> = new Promise((resolve) =>
-      browser.once("targetcreated", async (target: any) => {
-        const newPage = await target.page();
-        resolve(newPage);
-      })
-    );
-    const newPage = await newPagePromise;
-    await newPage.waitForSelector("#estado-localizado"); // Update the selector
+        try {
+          const envEstadosXml =
+            result["SOAP-ENV:Envelope"]["SOAP-ENV:Body"][0][
+              "v1:WebServService___ConsEnvEstadosResponse"
+            ][0]["v1:strEnvEstados"][0];
 
-    const result = await newPage.evaluate(() => {
-      const resultElement = document.querySelector(
-        "#estado-localizado"
-      ) as HTMLInputElement;
-      return resultElement ? resultElement.value : null;
+          parseString(
+            envEstadosXml,
+            (innerErr: Error | null, innerResult: any) => {
+              if (innerErr) {
+                console.error("Error parsing inner XML:", innerErr);
+                reject(null);
+                return;
+              }
+
+              try {
+                const estadosArray: EnvEstado[] =
+                  innerResult.CONSULTA.ENV_ESTADOS.map((estado: any) => ({
+                    V_COD_TIPO_EST: estado.$.V_COD_TIPO_EST,
+                    D_FEC_HORA_ALTA: estado.$.D_FEC_HORA_ALTA,
+                  }));
+                resolve(estadosArray);
+              } catch (e) {
+                console.error("Error extracting estados:", e);
+                reject(null);
+              }
+            }
+          );
+        } catch (e) {
+          console.error("Error extracting strEnvEstados:", e);
+          reject(null);
+        }
+      });
     });
-    await browser.close();
-    return result;
   } catch (error) {
-    console.error("Tenemos problems", error);
-    console.log("No funciona", error);
-    if (browser) {
-      await browser.close();
-    }
+    console.error(`Error sending SOAP request: ${error}`);
+    return null;
   }
 }
