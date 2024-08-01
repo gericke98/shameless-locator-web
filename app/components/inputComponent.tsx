@@ -40,7 +40,7 @@ export const InputComponent = ({ order, setOrder }: Props) => {
   return (
     <div
       className={cn(
-        "bg-white flex flex-col lg:w-[30%] w-3/4 rounded-3xl items-center py-5 px-10",
+        "bg-white flex flex-col lg:w-[30%] w-3/4 rounded-3xl items-center py-5 lg:px-10 px-5",
         order.message !== "" && "hidden"
       )}
     >
