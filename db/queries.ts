@@ -56,20 +56,3 @@ export async function getOrderQuery(orderNumber: string) {
     throw error;
   }
 }
-
-export async function getProduct(id: string) {
-  const session = createSession();
-  const url = `${process.env.NEXT_PUBLIC_SHOP_URL}/admin/api/2024-04/products/${id}.json`;
-
-  try {
-    const response = await fetch(url, session);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching orders:", error);
-    throw error;
-  }
-}

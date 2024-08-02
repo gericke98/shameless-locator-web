@@ -3,6 +3,7 @@ import axios from "axios";
 import { parseString } from "xml2js";
 import { getOrderQuery } from "@/db/queries";
 import { EnvEstado } from "@/types";
+import { options } from "@/placeholder/placeholder";
 
 export async function getOrder(prevState: any, formData: FormData) {
   // Extraigo la informacion del formulario
@@ -159,8 +160,18 @@ export async function estadoEnvioRequest(
                   innerResult.CONSULTA.ENV_ESTADOS.map((estado: any) => ({
                     V_COD_TIPO_EST: estado.$.V_COD_TIPO_EST,
                     D_FEC_HORA_ALTA: estado.$.D_FEC_HORA_ALTA,
+                    formatted: false,
                   }));
-                resolve(estadosArray);
+                const combinedData = estadosArray.map((estado) => {
+                  const trackingInfo = options.find(
+                    (option) => option.idx.toString() === estado.V_COD_TIPO_EST
+                  );
+                  return {
+                    ...estado,
+                    ...trackingInfo,
+                  };
+                });
+                resolve(combinedData);
               } catch (e) {
                 console.error("Error extracting estados:", e);
                 reject(null);
