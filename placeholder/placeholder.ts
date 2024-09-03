@@ -82,3 +82,22 @@ export const options = [
     textid: "DISPONIBLE",
   },
 ];
+
+export const optionsui = [
+  {
+    idx: 0,
+    indexRange: [0],
+  },
+  {
+    idx: 1,
+    indexRange: [1],
+  },
+  {
+    idx: 2,
+    indexRange: [2],
+  },
+  {
+    idx: 3,
+    indexRange: [3, 4, 5, 6, 7, 9, 10, 14],
+  },
+];

@@ -3,10 +3,10 @@ import { cn } from "@/lib/utils";
 import Logo from "@/public/LOGO_black.png";
 import Image from "next/image";
 import TickIcon from "@/public/tick.svg";
-import { EnvEstado, NewEnvEstado, Order } from "@/types";
+import { EnvEstado, Order } from "@/types";
 import Link from "next/link";
-import { options } from "@/placeholder/placeholder";
 import { useEffect, useState } from "react";
+import { optionsui } from "@/placeholder/placeholder";
 
 type Props = {
   order: Order;
@@ -67,7 +67,6 @@ export const TrackingComponent = ({ order, index }: Props) => {
       setReorganizedSeguimientos(Object.values(reorganized));
     }
   }, [order.seguimientos, change]);
-
   return (
     <div
       className={cn(
@@ -96,34 +95,34 @@ export const TrackingComponent = ({ order, index }: Props) => {
         {order.tracking}
       </h4>
       <div className="flex lg:flex-row flex-col w-full justify-between lg:px-20 lg:py-14 px-5 py-5 lg:gap-10 gap-2">
-        {reorganizedSeguimientos.map((option) => (
+        {order.seguimientos.map((option) => (
           <div
-            key={option.iconAlt}
-            className="w-full h-full flex lg:flex-col flex-row lg:items-center items-stretch lg:justify-center justify-stretch"
+            key={option.textid}
+            className="w-full h-full flex flex-row lg:items-center items-stretch lg:justify-center justify-stretch"
           >
-            <div className="relative flex lg:flex-row flex-col lg:items-center items-start justify-center w-full h-full min-h-12 lg:min-w-10 rounded-full basis-1/6 ">
+            <div className="relative bg-red-100 flex flex-col items-start justify-center w-[50px] h-full min-h-12 rounded-full basis-1/6">
               <Image
                 src={option.idx < index ? TickIcon : option.iconSrc}
                 alt={option.iconAlt}
                 className={cn(
-                  "border-2 border-stone-300 rounded-full lg:p-3 bg-white lg:w-[50px] lg:h-auto w-[35px] p-2 z-10",
-                  option.idx < index && "bg-green-100 border-green-300",
+                  "border-2 border-stone-300 rounded-full bg-white lg:w-[40px] w-[35px] p-2 z-10",
+                  option.idx < index + 1 && "bg-green-100 border-green-300",
                   option.textid === "INCIDENCIA" && "bg-red-100 border-red-300"
                 )}
               />
-              {option.idx < options.length - 1 && (
+              {option.idx < 3 && (
                 <>
                   <div
                     className={cn(
-                      "absolute lg:top-1/2 top-full left-4 transform lg:-translate-y-1/2 lg:-translate-x-1/3 -translate-y-1/2 lg:left-full lg:w-full w-0.5 lg:h-0.5 h-full bg-stone-300",
-                      option.idx < index && "bg-green-300",
-                      option.idx === options.length - 2 && "-translate-x-1/4"
+                      "absolute top-full left-4 transform -translate-y-1/2 w-0.5 h-full bg-stone-300",
+                      option.idx < index + 1 && "bg-green-300",
+                      option.idx === 3 && "-translate-x-1/4"
                     )}
                   />
                   <div
                     className={cn(
-                      "absolute lg:top-1/2 top-full left-4 transform lg:-translate-y-1/2 lg:-translate-x-1/3 lg:left-full lg:w-full w-0.5 lg:h-0.5 h-full bg-stone-300 z-1",
-                      option.idx < index && "bg-green-300"
+                      "absolute top-full left-4 transform w-0.5 h-full bg-stone-300 z-1",
+                      option.idx < index + 1 && "bg-green-300"
                     )}
                   />
                 </>
@@ -140,7 +139,7 @@ export const TrackingComponent = ({ order, index }: Props) => {
                 {option.text}
               </h3>
               <div className="flex flex-col items-center gap-2">
-                {option.D_FEC_HORA_ALTA.map((fecha) => (
+                {/* {option.D_FEC_HORA_ALTA.map((fecha) => (
                   <h4
                     key={fecha}
                     className={cn(
@@ -151,7 +150,7 @@ export const TrackingComponent = ({ order, index }: Props) => {
                   >
                     {fecha}
                   </h4>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>

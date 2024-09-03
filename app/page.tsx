@@ -5,6 +5,7 @@ import { TrackingComponent } from "./components/trackingComponent";
 import { InfoComponent } from "./components/infoComponent";
 import { options } from "@/placeholder/placeholder";
 import { Order } from "@/types";
+import { TrackingComponent2 } from "./components/trackingComponent2";
 
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
@@ -35,7 +36,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">
       <InputComponent order={order} setOrder={setOrder} />
       {order.seguimientos.length > 0 && (
-        <TrackingComponent order={order} index={index} />
+        <TrackingComponent2 order={order} index={index} />
       )}
 
       <InfoComponent order={order} />
