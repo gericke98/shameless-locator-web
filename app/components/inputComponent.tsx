@@ -21,6 +21,7 @@ export const InputComponent = ({ order, setOrder }: Props) => {
   const [state, formAction] = useFormState(getOrder, initialState);
 
   useEffect(() => {
+    console.log(state.message);
     if (state?.message === "Please enter a valid email address") {
       toast({
         variant: "destructive",
@@ -32,6 +33,13 @@ export const InputComponent = ({ order, setOrder }: Props) => {
         variant: "destructive",
         title: state.message,
         description: "There was a problem with your request.",
+      });
+    } else if (state?.message === "Your order is being prepared") {
+      toast({
+        variant: "destructive",
+        title: state.message,
+        description:
+          "Your order is being prepared and you will receive your tracking number by mail soon",
       });
     } else if (state?.message !== "" && state) {
       setOrder(state as Order);

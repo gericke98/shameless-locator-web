@@ -18,16 +18,28 @@ export async function getOrder(prevState: any, formData: FormData) {
       if (rawFormData.email?.toString() === order.contact_email) {
         // Creo una sesión en la web de tipsa
         const id_response = await getId();
-        const tracking_number = order.fulfillments[0].tracking_number;
-        const albaran = tracking_number.substring(12);
-        const envios_response = await estadoEnvioRequest(id_response, albaran);
+        if (order.fulfillments.length > 0) {
+          const tracking_number = order.fulfillments[0].tracking_number;
+          const albaran = tracking_number.substring(12);
+          const envios_response = await estadoEnvioRequest(
+            id_response,
+            albaran
+          );
 
-        return {
-          seguimientos: envios_response,
-          message: "Success",
-          tracking: order.fulfillments[0].tracking_number,
-          shipping: order.shipping_address,
-        };
+          return {
+            seguimientos: envios_response,
+            message: "Success",
+            tracking: order.fulfillments[0].tracking_number,
+            shipping: order.shipping_address,
+          };
+        } else {
+          return {
+            seguimientos: [],
+            message: "Your order is being prepared",
+            tracking: null,
+            shipping: null,
+          };
+        }
       } else {
         return {
           seguimientos: [],
