@@ -42,7 +42,7 @@ export const FormInput = ({
           type="text"
           name={name}
           className={cn(
-            "h-full w-full bg-slate-200 text-sm text-black font-light focus:outline-none",
+            "h-full w-full bg-slate-200 text-base text-black font-light focus:outline-none",
             icon === true && "pl-4"
           )}
           placeholder=""
