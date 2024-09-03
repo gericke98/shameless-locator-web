@@ -14,6 +14,11 @@ export default function Home() {
     shipping: null,
   });
   const [index, setIndex] = useState<number>(0);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (order.seguimientos.length > 0) {
@@ -29,7 +34,7 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black">
       <InputComponent order={order} setOrder={setOrder} />
-      {order.seguimientos.length > 0 && (
+      {isMounted && order.seguimientos.length > 0 && (
         <TrackingComponent2 order={order} index={index} />
       )}
 
