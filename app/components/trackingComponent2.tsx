@@ -102,7 +102,7 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
             // Add missing properties for items not found in array1
             return {
               V_COD_TIPO_EST: option.idx.toString(), // Assign empty if not found
-              D_FEC_HORA_ALTA: [], // Empty array
+              D_FEC_HORA_ALTA: [""], // Empty array
               formatted: true, // Assuming default false for formatted
               ...option, // Spread the properties from array2
             };
@@ -142,22 +142,22 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
           <h5 className="lg:text-sm text-xs text-center">{boxText}</h5>
         </div>
       </div>
-      <div className="flex flex-col w-full justify-between lg:px-10 lg:py-6 px-5 py-5 lg:gap-10 gap-2">
+      <div className="flex flex-col w-full justify-between lg:px-8 lg:py-6 px-5 py-5 lg:gap-10 gap-2">
         {reorganizedSeguimientos.map((option) => (
           <div
             key={option.textid}
             className="w-full h-full flex flex-row lg:items-center items-stretch lg:justify-center justify-stretch"
           >
-            <div className="relative flex flex-col items-start justify-center w-full h-full min-h-30">
+            <div className="relative flex flex-col items-start justify-center w-full h-full min-h-30 lg:px-1">
               <div className="w-full h-full flex flex-row items-center">
-                <h2 className="lg:text-xs text-xxs lg:w-16 w-15 lg:mr-2">
+                <h2 className="lg:text-xs text-xxs lg:min-w-16 min-w-12 lg:mr-2">
                   {option.D_FEC_HORA_ALTA.slice(-1)}
                 </h2>
                 <Image
                   src={option.idx < index ? TickIcon : option.iconSrc}
                   alt={option.iconAlt}
                   className={cn(
-                    "border-2 border-stone-300 rounded-full bg-white lg:w-[40px] w-[34px] p-2 z-10",
+                    "border-2 border-stone-300 rounded-full bg-white lg:w-[48px] w-[34px] p-2 z-10",
                     Number(option.idx) < index + 1 &&
                       "bg-green-100 border-green-300",
                     option.idx > 3 && "bg-red-100 border-red-300"
@@ -179,14 +179,14 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
                 <>
                   <div
                     className={cn(
-                      "absolute top-full lg:left-20 left-16 transform -translate-y-1/2 w-0.5 h-full bg-white",
+                      "absolute top-full lg:left-24 left-16 transform -translate-y-1/2 w-0.5 h-full bg-slate-100",
                       Number(option.idx) < index && "bg-green-300",
                       Number(option.idx) > 3 && "bg-red-300"
                     )}
                   />
                   <div
                     className={cn(
-                      "absolute top-full lg:left-20 left-16 transform w-0.5 h-full bg-white z-1",
+                      "absolute top-full lg:left-24 left-16 transform w-0.5 h-full bg-slate-100 z-1",
                       Number(option.idx) < index && "bg-green-300",
                       Number(option.idx) > 3 && "bg-red-300"
                     )}
