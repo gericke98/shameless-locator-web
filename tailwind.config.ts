@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      backgroundImage: {
+        "black-pattern": "url('/black-background.jpeg')",
+      },
       fontSize: {
         xxs: "0.6rem",
       },

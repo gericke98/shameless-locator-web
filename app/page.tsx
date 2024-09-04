@@ -32,13 +32,14 @@ export default function Home() {
     }
   }, [order]);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-black">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-black-pattern py-14">
       <InputComponent order={order} setOrder={setOrder} />
       {isMounted && order.seguimientos.length > 0 && (
-        <TrackingComponent2 order={order} index={index} />
+        <>
+          <TrackingComponent2 order={order} index={index} />
+          <InfoComponent order={order} />
+        </>
       )}
-
-      <InfoComponent order={order} />
     </main>
   );
 }
