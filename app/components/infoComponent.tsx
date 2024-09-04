@@ -10,7 +10,7 @@ export const InfoComponent = ({ order }: Props) => {
       className={cn(
         "hidden",
         order.message !== "" &&
-          "lg:w-[50%] w-[85%] flex flex-col mt-5 bg-white rounded-3xl items-start pb-2"
+          "lg:w-[50%] w-[85%] flex flex-col mt-5 bg-white-pattern rounded-3xl items-start pb-2"
       )}
     >
       <h3 className="w-full mt-5 ml-10 font-semibold lg:text-base text-sm">

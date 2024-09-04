@@ -94,7 +94,7 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
       className={cn(
         "hidden",
         order.seguimientos.length &&
-          "lg:w-[50%] w-[85%] flex flex-col bg-white items-center rounded-3xl"
+          "lg:w-[50%] w-[85%] flex flex-col bg-white-pattern items-center rounded-3xl"
       )}
     >
       <div className="flex flex-col items-center w-full h-full mt-2 mb-0 px-5">
@@ -110,8 +110,8 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
         <h3 className="w-full mt-2 text-sm tracking-wider text-center">
           Localiza tu envío
         </h3>
-        <span className="border w-full border-slate-100 mt-1" />
-        <div className="h-full w-full flex flex-col justify-center items-center mt-2 py-4 px-4 rounded-sm bg-blue-100">
+        <span className="border w-full border-slate-200 mt-1" />
+        <div className="h-full w-full flex flex-col justify-center items-center mt-2 py-4 px-4 rounded-sm bg-white shadow-sm">
           <h4 className="w-full lg:text-sm text-xs text-center">
             <span className="font-semibold">Número localizador</span>:{" "}
             {order.tracking}
