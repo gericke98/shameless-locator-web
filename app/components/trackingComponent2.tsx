@@ -142,11 +142,11 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
           <h5 className="lg:text-sm text-xs text-center">{boxText}</h5>
         </div>
       </div>
-      <div className="flex flex-col w-full justify-between lg:px-8 lg:py-6 px-5 py-5 lg:gap-10 gap-2">
+      <div className="flex flex-col w-full justify-between lg:px-8 lg:py-6 px-5 py-5 lg:gap-10 gap-4">
         {reorganizedSeguimientos.map((option) => (
           <div
             key={option.textid}
-            className="w-full h-full flex flex-row lg:items-center items-stretch lg:justify-center justify-stretch"
+            className="w-full h-full flex flex-row items-center justify-center"
           >
             <div className="relative flex flex-col items-start justify-center w-full h-full min-h-30 lg:px-1">
               <div className="w-full h-full flex flex-row items-center">
@@ -157,7 +157,7 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
                   src={option.idx < index ? TickIcon : option.iconSrc}
                   alt={option.iconAlt}
                   className={cn(
-                    "border-2 border-stone-300 rounded-full bg-white lg:w-[48px] w-[34px] p-2 z-10",
+                    "border-2 border-stone-300 rounded-full bg-white lg:w-[48px] w-[35px] p-2 z-10",
                     Number(option.idx) < index + 1 &&
                       "bg-green-100 border-green-300",
                     option.idx > 3 && "bg-red-100 border-red-300"
