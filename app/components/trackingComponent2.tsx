@@ -6,6 +6,7 @@ import TickIcon from "@/public/tick.svg";
 import { EnvEstado, Order } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { optionsui } from "@/placeholder/placeholder";
 
 type Props = {
   order: Order;
@@ -44,9 +45,9 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
   function defineBoxText(id: string, dateStr: string) {
     // En el caso de no estar entregado, se entregará el día siguiente
     if (Number(id) < 2) {
-      return `Tu pedido está en camino y llegará mañana entre las 10:00 y las 19:00.\nPara concertar un horario preferente de entrega, contactar con 916 31 67 12 indicando el número localizador`;
+      return `Tu pedido está en camino y llegará mañana entre las 10:00 y las 19:00.`;
     } else if (Number(id) === 2) {
-      return `Tu pedido está en reparto y llegará hoy entre las 10:00 y las 19:00.\nPara concertar un horario preferente de entrega, contactar con 916 31 67 12 indicando el número localizador`;
+      return `Tu pedido está en reparto y llegará hoy entre las 10:00 y las 19:00.`;
     } else if (Number(id) === 3) {
       return `Tu pedido ya ha sido entregado el ${dateStr}`;
     } else if (Number(id) > 3) {
@@ -85,8 +86,30 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
         }
         return acc;
       }, {} as { [key: string]: NewSeguimiento });
-
-      setReorganizedSeguimientos(Object.values(reorganized));
+      const reorganizedValues = Object.values(reorganized);
+      if (reorganizedValues.length > 3) {
+        setReorganizedSeguimientos(reorganizedValues);
+      } else {
+        const mergedArray = optionsui.map((option) => {
+          // Check if the idx exists in array1, otherwise default
+          const foundItem = reorganizedValues.find(
+            (obj) => obj.idx === option.idx
+          );
+          if (foundItem) {
+            // Merge the found item (preserving any keys from array1)
+            return foundItem;
+          } else {
+            // Add missing properties for items not found in array1
+            return {
+              V_COD_TIPO_EST: option.idx.toString(), // Assign empty if not found
+              D_FEC_HORA_ALTA: [], // Empty array
+              formatted: true, // Assuming default false for formatted
+              ...option, // Spread the properties from array2
+            };
+          }
+        });
+        setReorganizedSeguimientos(mergedArray);
+      }
     }
   }, [order.seguimientos, change]);
   return (
@@ -152,19 +175,19 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
                   </h3>
                 </div>
               </div>
-              {option.idx < index && (
+              {option.idx < 3 && (
                 <>
                   <div
                     className={cn(
-                      "absolute top-full lg:left-20 left-16 transform -translate-y-1/2 w-0.5 h-full bg-stone-300",
+                      "absolute top-full lg:left-20 left-16 transform -translate-y-1/2 w-0.5 h-full bg-white",
                       Number(option.idx) < index && "bg-green-300",
                       Number(option.idx) > 3 && "bg-red-300"
                     )}
                   />
                   <div
                     className={cn(
-                      "absolute top-full lg:left-20 left-16 transform w-0.5 h-full bg-stone-300 z-1",
-                      Number(option.idx) < index + 1 && "bg-green-300",
+                      "absolute top-full lg:left-20 left-16 transform w-0.5 h-full bg-white z-1",
+                      Number(option.idx) < index && "bg-green-300",
                       Number(option.idx) > 3 && "bg-red-300"
                     )}
                   />

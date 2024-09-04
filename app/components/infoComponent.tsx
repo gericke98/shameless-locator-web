@@ -35,8 +35,8 @@ export const InfoComponent = ({ order }: Props) => {
           </h5>
           <h5 className="lg:text-sm text-xs pl-10">{order.shipping?.phone}</h5>
           <p className="text-xs text-black px-10 pt-5 items-center text-wrap w-full">
-            Para cualquier modificación del envío, contactar con
-            hello@shamelesscollective.com indicando el número de pedido
+            Para cualquier modificación del envío, contactar con el +34 916 31
+            67 12 indicando el número localizador
           </p>
         </>
       )}

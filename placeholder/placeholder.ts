@@ -3,6 +3,37 @@ import BoxIcon from "../public/box.svg";
 import ShippingIcon from "../public/shipping.svg";
 import HandshakeIcon from "../public/handshake.svg";
 import AlertIcon from "../public/alert.svg";
+
+export const optionsui = [
+  {
+    idx: 0,
+    iconSrc: BoxIcon,
+    iconAlt: "Box",
+    text: "Pedido en preparación",
+    textid: "DOCUMENTADO",
+  },
+  {
+    idx: 1,
+    iconSrc: WarehouseIcon,
+    iconAlt: "Warehouse",
+    text: "Pedido en almacén para ser enviado",
+    textid: "TRANSITO",
+  },
+  {
+    idx: 2,
+    iconSrc: ShippingIcon,
+    iconAlt: "ShippingIcon",
+    text: "Pedido en reparto",
+    textid: "REPARTO",
+  },
+  {
+    idx: 3,
+    iconSrc: HandshakeIcon,
+    iconAlt: "HandshakeIcon",
+    text: "Entregado",
+    textid: "ENTREGADO",
+  },
+];
 export const options = [
   {
     idx: 0,
@@ -80,24 +111,5 @@ export const options = [
     iconAlt: "HandshakeIcon",
     text: "DISPONIBLE",
     textid: "DISPONIBLE",
-  },
-];
-
-export const optionsui = [
-  {
-    idx: 0,
-    indexRange: [0],
-  },
-  {
-    idx: 1,
-    indexRange: [1],
-  },
-  {
-    idx: 2,
-    indexRange: [2],
-  },
-  {
-    idx: 3,
-    indexRange: [3, 4, 5, 6, 7, 9, 10, 14],
   },
 ];
