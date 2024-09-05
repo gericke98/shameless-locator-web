@@ -4,15 +4,8 @@ import MailIcon from "@/public/mail_24dp_FILL0_wght400_GRAD0_opsz24.svg";
 import Image from "next/image";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-export const FormInput = ({
-  name,
-  title,
-  icon,
-}: {
-  name: string;
-  title: string;
-  icon: boolean;
-}) => {
+import { FormInputType } from "@/types";
+export const FormInput = ({ name, title, icon }: FormInputType) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setValue(value);
@@ -26,13 +19,13 @@ export const FormInput = ({
       <div
         className={cn(
           "w-full h-full pl-4 flex bg-slate-200 border-b-2 border-[#868687] focus:border-[#383839]",
-          icon === true ? "flex-row" : "flex-col"
+          icon ? "flex-row" : "flex-col"
         )}
       >
-        {icon === true && (
+        {icon && (
           <Image
             src={name === "order" ? BoxIcon : MailIcon}
-            alt="Icon 1"
+            alt={name === "order" ? "Order Icon" : "Mail Icon"}
             width={15}
             height={15}
           />
@@ -43,9 +36,8 @@ export const FormInput = ({
           name={name}
           className={cn(
             "h-full w-full bg-slate-200 text-base lg:text-sm text-black font-light focus:outline-none",
-            icon === true && "pl-4"
+            icon && "pl-4"
           )}
-          placeholder=""
           value={value}
           onChange={handleChange}
         />

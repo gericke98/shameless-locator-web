@@ -19,21 +19,29 @@ export const InfoComponent = ({ order }: Props) => {
       <span className="border w-full border-slate-100 mt-1 mb-2" />
       {order.shipping && (
         <>
-          <h5 className="lg:text-sm text-xs pl-10">{order.shipping?.name}</h5>
           <h5 className="lg:text-sm text-xs pl-10">
-            {order.shipping?.address1}
+            {order.shipping.name || "No information provided"}
           </h5>
-          {order.shipping?.address2 && (
+          <h5 className="lg:text-sm text-xs pl-10">
+            {order.shipping.address1 || "No information provided"}
+          </h5>
+          {order.shipping.address2 && (
             <h5 className="lg:text-sm text-xs pl-10">
-              {order.shipping?.address2}
+              {order.shipping.address2 || "No information provided"}
             </h5>
           )}
-          <h5 className="lg:text-sm text-xs pl-10">{order.shipping?.zip}</h5>
-          <h5 className="lg:text-sm text-xs pl-10">{order.shipping?.city}</h5>
           <h5 className="lg:text-sm text-xs pl-10">
-            {order.shipping?.province}
+            {order.shipping.zip || "No information provided"}
           </h5>
-          <h5 className="lg:text-sm text-xs pl-10">{order.shipping?.phone}</h5>
+          <h5 className="lg:text-sm text-xs pl-10">
+            {order.shipping.city || "No information provided"}
+          </h5>
+          <h5 className="lg:text-sm text-xs pl-10">
+            {order.shipping.province || "No information provided"}
+          </h5>
+          <h5 className="lg:text-sm text-xs pl-10">
+            {order.shipping.phone || "No information provided"}
+          </h5>
           <p className="text-xs text-black px-10 pt-5 items-center text-wrap w-full">
             Para cualquier modificación del envío, contactar con el <br />
             <span className="font-bold">+34 916 31 67 12</span> indicando el

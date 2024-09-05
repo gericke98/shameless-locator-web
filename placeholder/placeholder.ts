@@ -3,6 +3,8 @@ import BoxIcon from "../public/box.svg";
 import ShippingIcon from "../public/shipping.svg";
 import HandshakeIcon from "../public/handshake.svg";
 import AlertIcon from "../public/alert.svg";
+import { MessageKeys } from "@/types";
+import { Toast } from "@/components/ui/use-toast";
 
 export const optionsui = [
   {
@@ -113,3 +115,24 @@ export const options = [
     textid: "DISPONIBLE",
   },
 ];
+
+export const messageMap: Record<MessageKeys, Toast> = {
+  "Please enter a valid email address": {
+    variant: "destructive",
+    title: "Introduce un correo electrónico válido",
+    description:
+      "Introduce el correo electrónico con el que realizaste el pedido",
+  },
+  "Please enter a valid order number": {
+    variant: "destructive",
+    title: "Introduce un número de pedido válido",
+    description:
+      "El número de pedido no lleva # y está compuesto por 5 números",
+  },
+  "Your order is being prepared": {
+    variant: "destructive",
+    title: "Tu pedido se está preparando para enviarse",
+    description:
+      "Tu pedido se está preparando para enviarse y recibirás un correo electrónico con el número de seguimiento en las próximas horas",
+  },
+};

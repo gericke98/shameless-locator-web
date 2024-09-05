@@ -43,3 +43,18 @@ export type Icon = {
   blurWidth: number;
   blurHeight: number;
 };
+
+export type MessageKeys =
+  | "Please enter a valid email address"
+  | "Please enter a valid order number"
+  | "Your order is being prepared";
+
+export type FormInputType = {
+  name: string;
+  title: string;
+  icon: boolean;
+};
+
+export type NewSeguimiento = Omit<EnvEstado, "D_FEC_HORA_ALTA"> & {
+  D_FEC_HORA_ALTA: string[];
+};

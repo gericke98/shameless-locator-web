@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import Logo from "@/public/LOGO_black.png";
 import Image from "next/image";
 import TickIcon from "@/public/tick.svg";
-import { EnvEstado, Order } from "@/types";
+import { Order, NewSeguimiento } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { optionsui } from "@/placeholder/placeholder";
@@ -13,12 +13,7 @@ type Props = {
   index: number;
 };
 
-type NewSeguimiento = Omit<EnvEstado, "D_FEC_HORA_ALTA"> & {
-  D_FEC_HORA_ALTA: string[];
-};
-
 export const TrackingComponent2 = ({ order, index }: Props) => {
-  const [change, setChanged] = useState(false);
   const [boxText, setBoxText] = useState<string>(
     "Ya hemos recibido tu pedido y se está preparando!"
   );
@@ -38,80 +33,74 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
     const formattedMonth = date.toLocaleString("default", { month: "short" });
     const formattedHours = date.getHours().toString().padStart(2, "0");
     const formattedMinutes = date.getMinutes().toString().padStart(2, "0");
-
     return `${formattedDay} ${formattedMonth}\n${formattedHours}:${formattedMinutes}`;
   }
 
   function defineBoxText(id: string, dateStr: string) {
+    const messages: { [key: string]: string } = {
+      "0": "Tu pedido está en camino y llegará mañana entre las 10:00 y las 19:00.",
+      "1": "Tu pedido está en camino y llegará mañana entre las 10:00 y las 19:00.",
+      "2": "Tu pedido está en reparto y llegará hoy entre las 10:00 y las 19:00.",
+      "3": `Tu pedido ya ha sido entregado el ${dateStr}.`,
+      default:
+        "Tu pedido está en incidencia. Contactar con el teléfono 916 31 67 12 indicando el número localizador para más información.",
+    };
+    return messages[id] ?? messages["default"];
     // En el caso de no estar entregado, se entregará el día siguiente
-    if (Number(id) < 2) {
-      return `Tu pedido está en camino y llegará mañana entre las 10:00 y las 19:00.`;
-    } else if (Number(id) === 2) {
-      return `Tu pedido está en reparto y llegará hoy entre las 10:00 y las 19:00.`;
-    } else if (Number(id) === 3) {
-      return `Tu pedido ya ha sido entregado el ${dateStr}`;
-    } else if (Number(id) > 3) {
-      return `Tu pedido está en incidencia. Contactar con el teléfono 916 31 67 12 indicando el número localizador para más información`;
-    } else {
-      return "Ya hemos recibido tu pedido y se está preparando!";
-    }
   }
   useEffect(() => {
-    if (!change) {
-      setChanged(true);
-      const formattedSeguimientos = order.seguimientos.map((item) => {
-        if (!item.formatted) {
-          return {
-            ...item,
-            D_FEC_HORA_ALTA: formatDate(item.D_FEC_HORA_ALTA),
-            formatted: true,
-          };
-        }
-        return item;
-      });
-      const text = defineBoxText(
-        order.seguimientos[order.seguimientos.length - 1].V_COD_TIPO_EST,
-        order.seguimientos[order.seguimientos.length - 1].D_FEC_HORA_ALTA
-      );
-      setBoxText(text);
-      const reorganized = formattedSeguimientos.reduce((acc, item) => {
-        if (!acc[item.V_COD_TIPO_EST]) {
-          acc[item.V_COD_TIPO_EST] = {
-            ...item,
-            D_FEC_HORA_ALTA: [item.D_FEC_HORA_ALTA],
-            formatted: true,
-          };
-        } else {
-          acc[item.V_COD_TIPO_EST].D_FEC_HORA_ALTA.push(item.D_FEC_HORA_ALTA);
-        }
-        return acc;
-      }, {} as { [key: string]: NewSeguimiento });
-      const reorganizedValues = Object.values(reorganized);
-      if (reorganizedValues.length > 3) {
-        setReorganizedSeguimientos(reorganizedValues);
-      } else {
-        const mergedArray = optionsui.map((option) => {
-          // Check if the idx exists in array1, otherwise default
-          const foundItem = reorganizedValues.find(
-            (obj) => obj.idx === option.idx
-          );
-          if (foundItem) {
-            // Merge the found item (preserving any keys from array1)
-            return foundItem;
-          } else {
-            // Add missing properties for items not found in array1
-            return {
-              V_COD_TIPO_EST: option.idx.toString(), // Assign empty if not found
-              D_FEC_HORA_ALTA: [""], // Empty array
-              formatted: true, // Assuming default false for formatted
-              ...option, // Spread the properties from array2
-            };
-          }
-        });
-        setReorganizedSeguimientos(mergedArray);
+    const formattedSeguimientos = order.seguimientos.map((item) => ({
+      ...item,
+      D_FEC_HORA_ALTA: formatDate(item.D_FEC_HORA_ALTA),
+    }));
+    const lastSeguimiento = order.seguimientos[order.seguimientos.length - 1];
+    setBoxText(
+      defineBoxText(
+        lastSeguimiento.V_COD_TIPO_EST,
+        lastSeguimiento.D_FEC_HORA_ALTA
+      )
+    );
+
+    const reorganized = formattedSeguimientos.reduce((acc, item) => {
+      // Confirmo que exista el valor
+      acc[item.V_COD_TIPO_EST] = acc[item.V_COD_TIPO_EST] || {
+        ...item,
+        D_FEC_HORA_ALTA: [], // Initialize as an empty array
+      };
+      const formattedDate = Array.isArray(item.D_FEC_HORA_ALTA)
+        ? item.D_FEC_HORA_ALTA[0] // In case it's already an array, take the first element
+        : item.D_FEC_HORA_ALTA;
+      if (formattedDate) {
+        acc[item.V_COD_TIPO_EST].D_FEC_HORA_ALTA.push(formattedDate);
       }
+
+      return acc;
+    }, {} as { [key: string]: NewSeguimiento });
+    const reorganizedValues = Object.values(reorganized);
+    if (reorganizedValues.length > 3) {
+      setReorganizedSeguimientos(reorganizedValues);
+    } else {
+      const mergedArray = optionsui.map((option) => {
+        // Check if the idx exists in array1, otherwise default
+        const foundItem = reorganizedValues.find(
+          (obj) => obj.idx === option.idx
+        );
+        if (foundItem) {
+          // Merge the found item (preserving any keys from array1)
+          return foundItem;
+        } else {
+          // Add missing properties for items not found in array1
+          return {
+            V_COD_TIPO_EST: option.idx.toString(), // Assign empty if not found
+            D_FEC_HORA_ALTA: [""], // Empty array
+            formatted: true, // Assuming default false for formatted
+            ...option, // Spread the properties from array2
+          };
+        }
+      });
+      setReorganizedSeguimientos(mergedArray);
     }
-  }, [order.seguimientos, change]);
+  }, [order.seguimientos]);
   return (
     <div
       className={cn(
@@ -139,7 +128,9 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
             <span className="font-semibold">Número localizador</span>:{" "}
             {order.tracking}
           </h4>
-          <h5 className="lg:text-sm text-xs text-center">{boxText}</h5>
+          <h5 className="lg:text-sm text-xs text-cente font-bold text-blue-700">
+            {boxText}
+          </h5>
         </div>
       </div>
       <div className="flex flex-col w-full justify-between lg:px-8 lg:py-6 px-5 py-5 lg:gap-10 gap-4">
