@@ -31,6 +31,7 @@ export default function Home() {
       }
     }
   }, [order]);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-black-pattern py-14">
       <InputComponent order={order} setOrder={setOrder} />
