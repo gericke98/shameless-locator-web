@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import Logo from "@/public/LOGO_black.png";
 import Image from "next/image";
-import TickIcon from "@/public/tick.svg";
+import TickIcon from "@/public/tick2.svg";
 import { Order, NewSeguimiento } from "@/types";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -43,7 +43,7 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
       "2": "Tu pedido está en reparto y llegará hoy entre las 10:00 y las 19:00.",
       "3": `Tu pedido ya ha sido entregado el ${dateStr}.`,
       default:
-        "Tu pedido está en incidencia. Contactar con el teléfono 916 31 67 12 indicando el número localizador para más información.",
+        "Tu pedido está en incidencia. Contacta con el teléfono 916 31 67 12 indicando el número localizador para más información.",
     };
     return messages[id] ?? messages["default"];
     // En el caso de no estar entregado, se entregará el día siguiente
@@ -106,10 +106,10 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
       className={cn(
         "hidden",
         order.seguimientos.length &&
-          "lg:w-[50%] w-[85%] flex flex-col bg-white-pattern items-center rounded-3xl"
+          "lg:w-[50%] w-[85%] flex flex-col bg-white-pattern py-6 items-center rounded-3xl"
       )}
     >
-      <div className="flex flex-col items-center w-full h-full mt-2 mb-0 px-5">
+      <div className="flex flex-col items-center w-full h-full px-10">
         <Link href="https://shamelesscollective.com">
           <Image
             src={Logo}
@@ -119,21 +119,21 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
             className="mt-5"
           />
         </Link>
-        <h3 className="w-full mt-2 text-sm tracking-wider text-center">
+        <h3 className="w-full mt-2 text-sm text-center uppercase tracking-wide font-bold">
           Localiza tu envío
         </h3>
         <span className="border w-full border-slate-200 mt-1" />
-        <div className="h-full w-full flex flex-col justify-center items-center mt-2 py-4 px-4 rounded-sm bg-white shadow-sm">
+        <div className="h-full w-full flex flex-col justify-center items-center mt-2 py-4 px-4 rounded-lg bg-white shadow-md">
           <h4 className="w-full lg:text-sm text-xs text-center">
             <span className="font-semibold">Número localizador</span>:{" "}
             {order.tracking}
           </h4>
-          <h5 className="lg:text-sm text-xs text-cente font-bold text-blue-700">
+          <h5 className="lg:text-sm text-xs mt-2 font-bold text-blue-700 text-center">
             {boxText}
           </h5>
         </div>
       </div>
-      <div className="flex flex-col w-full justify-between lg:px-8 lg:py-6 px-5 py-5 lg:gap-10 gap-4">
+      <div className="flex flex-col w-full justify-between items-center lg:px-14 lg:py-6 px-10 py-5 lg:gap-10 gap-4">
         {reorganizedSeguimientos.map((option) => (
           <div
             key={option.textid}
@@ -148,9 +148,9 @@ export const TrackingComponent2 = ({ order, index }: Props) => {
                   src={option.idx < index ? TickIcon : option.iconSrc}
                   alt={option.iconAlt}
                   className={cn(
-                    "border-2 border-stone-300 rounded-full bg-white lg:w-[48px] w-[35px] p-2 z-10",
+                    " border-white rounded-full bg-white lg:w-[48px] w-[35px] z-10 p-2 shadow-md",
                     Number(option.idx) < index + 1 &&
-                      "bg-green-100 border-green-300",
+                      "bg-green-300 border-green-300",
                     option.idx > 3 && "bg-red-100 border-red-300"
                   )}
                 />

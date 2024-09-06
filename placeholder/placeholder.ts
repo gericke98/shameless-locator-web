@@ -1,8 +1,8 @@
-import WarehouseIcon from "../public/warehouse.svg";
-import BoxIcon from "../public/box.svg";
-import ShippingIcon from "../public/shipping.svg";
-import HandshakeIcon from "../public/handshake.svg";
-import AlertIcon from "../public/alert.svg";
+import WarehouseIcon from "../public/warehouse_26dp_000000_FILL1_wght400_GRAD0_opsz24.svg";
+import BoxIcon from "../public/box2.svg";
+import ShippingIcon from "../public/truck.svg";
+import HandshakeIcon from "../public/handshake2.svg";
+import AlertIcon from "../public/alert2.svg";
 import { MessageKeys } from "@/types";
 import { Toast } from "@/components/ui/use-toast";
 
