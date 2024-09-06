@@ -58,3 +58,14 @@ export type FormInputType = {
 export type NewSeguimiento = Omit<EnvEstado, "D_FEC_HORA_ALTA"> & {
   D_FEC_HORA_ALTA: string[];
 };
+
+export type ShippingInfo = {
+  name?: string;
+  address1?: string;
+  address2?: string | null;
+  phone?: number;
+  city?: string;
+  zip?: string;
+  province?: string;
+  country?: string;
+} | null;

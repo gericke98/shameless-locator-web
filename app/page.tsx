@@ -33,6 +33,7 @@ export default function Home() {
   }, [order]);
 
   return (
+    // Pending añadir idiomas
     <main className="flex min-h-screen flex-col items-center justify-center bg-black-pattern py-14">
       <InputComponent order={order} setOrder={setOrder} />
       {isMounted && order.seguimientos.length > 0 && (

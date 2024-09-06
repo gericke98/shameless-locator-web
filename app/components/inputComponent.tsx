@@ -43,48 +43,50 @@ export const InputComponent = ({ order, setOrder }: Props) => {
         order.message && "hidden"
       )}
     >
-      <div className="flex flex-col items-center mt-5">
-        <Image src={Logo} alt="Logo" width={150} height={150} />
-        <span className="border-y w-full border-slate-200 mt-2" />
-        <h5 className="text-xs mt-2 mb-10 text-slate-500 tracking-wide">
-          LOCALIZA TU PEDIDO
-        </h5>
-        <h5 className="text-sm text-slate-600">
-          Introduce los datos de tu pedido original para iniciar el proceso.
-        </h5>
-        <form className="mt-5 w-full flex flex-col gap-8" action={formAction}>
-          <FormInput name="order" title="Número de pedido" icon />
-          <FormInput name="email" title="Email" icon />
-          <h6 className="text-xxs text-black mt-5">
-            Al continuar, confirmas que aceptas los{" "}
-            <span>
-              <Link
-                href="https://shamelesscollective.com/pages/return-and-exchanges"
-                className="text-blue-400 border-b border-blue-400 font-bold"
-              >
-                Términos y Condiciones
-              </Link>
-            </span>
-            ,{" "}
-            <span>
-              <Link
-                href="https://shamelesscollective.com/pages/return-and-exchanges"
-                className="text-blue-400 border-b border-blue-400 font-bold"
-              >
-                Política de privacidad y
-              </Link>
-            </span>{" "}
-            <span>
-              <Link
-                href="https://shamelesscollective.com/pages/return-and-exchanges"
-                className="text-blue-400 border-b border-blue-400 font-bold"
-              >
-                la Política de cookies
-              </Link>
-            </span>
-          </h6>
-          <Button />
-        </form>
+      <div className="w-full h-full">
+        <div className="flex flex-col items-center mt-5">
+          <Image src={Logo} alt="Logo" width={150} height={150} />
+          <span className="border-y w-full border-slate-200 mt-2" />
+          <h5 className="text-xs mt-2 mb-10 text-slate-500 tracking-wide">
+            LOCALIZA TU PEDIDO
+          </h5>
+          <h5 className="text-sm text-slate-600">
+            Introduce los datos de tu pedido original para iniciar el proceso.
+          </h5>
+          <form className="mt-5 w-full flex flex-col gap-8" action={formAction}>
+            <FormInput name="order" title="Número de pedido" icon />
+            <FormInput name="email" title="Email" icon />
+            <h6 className="text-xxs text-black mt-5">
+              Al continuar, confirmas que aceptas los{" "}
+              <span>
+                <Link
+                  href="https://shamelesscollective.com/pages/return-and-exchanges"
+                  className="text-blue-400 border-b border-blue-400 font-bold"
+                >
+                  Términos y Condiciones
+                </Link>
+              </span>
+              ,{" "}
+              <span>
+                <Link
+                  href="https://shamelesscollective.com/pages/return-and-exchanges"
+                  className="text-blue-400 border-b border-blue-400 font-bold"
+                >
+                  Política de privacidad y
+                </Link>
+              </span>{" "}
+              <span>
+                <Link
+                  href="https://shamelesscollective.com/pages/return-and-exchanges"
+                  className="text-blue-400 border-b border-blue-400 font-bold"
+                >
+                  la Política de cookies
+                </Link>
+              </span>
+            </h6>
+            <Button />
+          </form>
+        </div>
       </div>
     </div>
   );
