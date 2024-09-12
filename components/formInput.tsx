@@ -18,7 +18,7 @@ export const FormInput = ({ name, title, icon }: FormInputType) => {
       </h6>
       <div
         className={cn(
-          "w-full h-full pl-4 flex bg-slate-200 border-b-2 border-[#868687] focus:border-[#383839]",
+          "w-full h-full pl-4 flex items-center bg-slate-200 border-b-2 border-[#868687] focus:border-[#383839]",
           icon ? "flex-row" : "flex-col"
         )}
       >
@@ -30,13 +30,18 @@ export const FormInput = ({ name, title, icon }: FormInputType) => {
             height={15}
           />
         )}
-
+        {name === "order" && (
+          <p className="text-xs font-light pl-4 inline-block text-gray-800">
+            #
+          </p>
+        )}
         <input
           type="text"
           name={name}
           className={cn(
             "h-full w-full bg-slate-200 text-base lg:text-sm text-black font-light focus:outline-none",
-            icon && "pl-4"
+            icon && name === "order" && "pl-1",
+            icon && name !== "order" && "pl-4"
           )}
           value={value}
           onChange={handleChange}
